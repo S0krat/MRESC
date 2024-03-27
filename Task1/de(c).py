@@ -66,7 +66,7 @@ def max_a_i(mat_dim, epsilon, n):
     return np.max(gaussian(a_mat, b_vec))
 
 
-def z_8(mat_dim, epsilon, n, n_rk):
+def runge_kutta(mat_dim, epsilon, n, n_rk):
     h = 8 / (n_rk - 1)
     y = [1]
     z = -1  # max_a_i(mat_dim, epsilon, n)
@@ -94,4 +94,24 @@ def z_8(mat_dim, epsilon, n, n_rk):
     plt.show()
 
 
-z_8(10, 0.0001, 1000, 100)
+def analytical(b):
+    b = b - 1
+    '''
+    c1 + c2 = 1
+    -c1 + 10c2 = b
+    '''
+    c2 = (1 + b) / 11
+    c1 = 1 - c2
+    return c1 * np.exp(-8) + c2 * np.exp(80)
+
+
+import matplotlib.pyplot as plt
+
+xs = [10 ** (-17) / 5 * i for i in range(100)]
+ys = [analytical(x) for x in xs]
+plt.plot(xs, ys)
+plt.yscale("log")
+plt.xlabel("error")
+plt.ylabel("z(8)")
+plt.grid()
+plt.show()
